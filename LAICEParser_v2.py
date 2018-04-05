@@ -464,17 +464,35 @@ with open(filename, "r") as f:
     SN_temperatureMonitor1_UpperBoard_L2 = (SN_temperatureMonitor1_UpperBoard_L1*(5.0/65536.0)/0.004) - 273.0
     SN_temperatureMonitorDSN_L2 =SN_temperatureMonitorDSN_L1*(5.0/65536.0)/0.004 - 273.0
     SN_pos_5V_Converter_L2 = SN_pos_5V_Converter_L1*(5.0/65536.0)/(100.0/124.0)
+    
     #SN_spaceMonitor2_L2 = #WHAT CONVERSION HERE? TM MATRIX BLANK    
-    #SN_mcp_CurrentSample1_L2 = #WHAT CONVERSION HERE? TM MATRIX BLANK    
+    #SAYS n/a
+    
+    #SN_mcp_CurrentSample1_L2 = #WHAT CONVERSION HERE? TM MATRIX BLANK  
+    SN_mcp_CurrentSample1_L2 = (2.481 * exp(SN_mcp_CurrentSample1_L1*(-3.803)(5/65535)))
+    
     SN_tipV1_L2 = SN_tipV1_L1*(5.0/65536.0)*(-150.0/3.0)
-    #mcp_CurrentSample2_L2 = #WHAT CONVERSION HERE? TM MATRIX BLANK    
+    
+    #mcp_CurrentSample2_L2 = #WHAT CONVERSION HERE? TM MATRIX BLANK
+    SN_mcp_CurrentSample2_L2 = (2.481 * exp(SN_mcp_CurrentSample2_L1*(-3.803)(5/65535)))
+    
     SN_tipV2_L2 = SN_tipV2_L1*(5.0/65536.0)*(-150.0/3.0)
-    #mcp_CurrentSample3_L2 = #WHAT CONVERSION HERE? TM MATRIX BLANK    
+  
+    #mcp_CurrentSample3_L2 = #WHAT CONVERSION HERE? TM MATRIX BLANK 
+    SN_mcp_CurrentSample3_L2 = (2.481 * exp(SN_mcp_CurrentSample1_L3*(-3.803)(5/65535)))
+    
     SN_tipV3_L2 = SN_tipV3_L1*(5.0/65536.0)*(-150.0/3.0)
+    
     SN_endWordSNeuPI_L2 = SN_endWordSNeuPI_L1
+    
     #pressureReading1_Torr =  #WHAT CONVERSION HERE?
+    pressureReading1_Torr = (SN_mcp_CurrentSample1_L2 - 6.275 * pow(10,-9))/(3.267*pow(10,-2)
+    
     #pressureReading2_Torr = #WHAT CONVERSION HERE?
+    pressureReading2_Torr = (SN_mcp_CurrentSample2_L2 - 1.298 * pow(10,-8))/(3.837*pow(10,-2)
+                                                                             
     #pressureReading3_Torr =  #WHAT CONVERSION HERE?
+    pressureReading3_Torr = (SN_mcp_CurrentSample3_L2 - 1.603 * pow(10,-8))/(4.176*pow(10,-2)                                                                       
     
     '''
     Level 1 - LINAS
@@ -522,9 +540,9 @@ with open(filename, "r") as f:
     packetCounter_L2 = hex(packetCounter_L1)
     LINAS_powerStatus_FilOn_FilSide_GridOn_SAFE_L2 = str(chr(LINAS_powerStatus_FilOn_FilSide_GridOn_SAFE_L1))#varchar 
     LINAS_errorStatus_Range_TBD_L2 = str(chr(LINAS_errorStatus_Range_TBD_L1))#varchar 
-    # watchdogTimeoutCounter_L2 = #in what format?
-    # gaugeTemp_L2 = #look up table (see TM Matrix)
-    # boardTemp_L2 = #look up table (see TM Matrix)
+    # watchdogTimeoutCounter_L2 = #in what format? 0x00 - 0xFF (increments for each watchdog timeout ocurance)
+    # gaugeTemp_L2 = #look up table (see TM Matrix) (Refer to YSI 10kohm temperature lookup table - found in LINAS User Guide)
+    # boardTemp_L2 = #look up table (see TM Matrix) (Refer to YSI 10kohm temperature lookup table - found in LINAS User Guide)
     LINAS_pos_12V_Monitor_L2 = (LINAS_pos_12V_Monitor_L1)*0.1963
     LINAS_referenceVoltage_L2 = (LINAS_referenceVoltage_L1)*0.01953
     LINAS_filamentSupplyCurrent_L2 = (LINAS_filamentSupplyCurrent_L1)*2.0331+5.4691
@@ -534,7 +552,16 @@ with open(filename, "r") as f:
     LINAS_igCollectorCurrent_L2 = (LINAS_igCollectorCurrent_L1-2.85328227*10.0**6.0)/(5.318529932*10.0**6.0)
     LINAS_igEmissionCurrent_L2 =(LINAS_igEmissionCurrent_L1-9.697692934*10.0**5.0)/(9.438607963*10.0**5.0)
     LINAS_endWordLINAS_L2 = LINAS_endWordLINAS_L1#varchar
+    
 #    #pressureReading1_Torr = 2.0 #WHAT CONVERSION HERE?
 #    #pressureReading2_Torr = 2.0 #WHAT CONVERSION HERE?
 #    #pressureReading3_Torr = 2.0 #WHAT CONVERSION HERE?
+                                                                             
+                                                                             
+    #00  P = 1.92903 * pow(10, -5) * (ICL/IEL) - 3.16361 * pow(10, -7)
+    #01  P = 3.95990 * pow(10, -5) * (ICL/IEL) - 1.16025 * pow(10, -6)
+    #10  P = 1.72181 * pow(10, -5) * (ICL/IEL) - 2.39332 * pow(10, -7)
+    #11  P = 3.51584 * pow(10, -5) * (ICL/IEL) - 5.37924 * pow(10, -7)
+                                                                             
+                                                                            
     
